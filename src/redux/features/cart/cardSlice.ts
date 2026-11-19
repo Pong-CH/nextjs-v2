@@ -56,21 +56,22 @@ export const cartSlice = createSlice({
       }
     },
 
-      removeFromCart: (state, action: PayloadAction<number>) => {
+    removeFromCart: (state, action: PayloadAction<number>) => {
       const itemId = action.payload;
 
-      const existingItem = state.items.find(
-        (item) => item.id === itemId,
-      );
+      const existItem = state.items.find((item) => item.id === itemId);
 
-      if (!existingItem) return;
+      if (!existItem) return;
 
-      state.totalQuantity -= existingItem.quantity;
-      state.totalAmount -= existingItem.totalPrice;
+      state.totalQuantity -= existItem.quantity;
+      state.totalAmount -= existItem.totalPrice;
 
-      state.items = state.items.filter(
-        (item) => item.id !== itemId,
-      );
+      state.items = state.items.filter((item) => item.id !== itemId);
+
+      if (state.items.length === 0) {
+        state.totalQuantity = 0;
+        state.totalAmount = 0;
+      }
     },
   },
 });
